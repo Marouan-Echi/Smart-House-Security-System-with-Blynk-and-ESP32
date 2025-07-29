@@ -104,25 +104,32 @@ Widgets utilisés :
 Dans config.h :
 
 #define BLYNK_AUTH_TOKEN "TON_TOKEN_BLYNK"
+
 const char* WIFI_SSID = "TON_SSID";
+
 const char* WIFI_PASSWORD = "TON_MDP";
+
 const String validUIDs[] = { "3351ab0d" };
+
 
 ##🚀 Mise en route
 1. Ouvrir le projet dans l'IDE Arduino
 
 2. Installer les bibliothèques suivantes :
+3. 
 Blynk
+
 MFRC522
+
 ESP32Servo
 
-3. Modifier le fichier config.h avec vos informations personnelles
+4. Modifier le fichier config.h avec vos informations personnelles
 
-4. Flasher le code sur l’ESP32
+5. Flasher le code sur l’ESP32
 
-5. Ouvrir l'application Blynk et créer les widgets mentionnés ci-dessus
+6. Ouvrir l'application Blynk et créer les widgets mentionnés ci-dessus
 
-6. Lancer le moniteur série et tester les capteurs
+7. Lancer le moniteur série et tester les capteurs
 
 ## 📦 Structure du projet
 📁 SmartHouseSecurity/
@@ -130,7 +137,9 @@ ESP32Servo
 ├── main.ino             # Code principal
 ├── images               #contient les images réels 
 ├── README.md            # Documentation du projet
+
 ##🧠 À venir
+
 * Ajout d’un écran TFT/OLED pour affichage local
 
 * Intégration Firebase pour logs longue durée
