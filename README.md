@@ -83,7 +83,6 @@ Widgets utilisés :
 
 ## 🔗 Architecture logicielle
 
-graph TD
   A[ESP32] -->|PIR| B[Mouvement détecté]
   A -->|MQ2| C[Détection gaz]
   A -->|Ultrason| D[Détection obstacle]
