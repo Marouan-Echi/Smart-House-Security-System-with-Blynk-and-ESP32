@@ -99,8 +99,8 @@ Widgets utilisés :
   
   G -- Non --> I[BUZZER + LED rouge]
   
+## 🔧 Configuration
 
-##🔧 Configuration
 Dans config.h :
 
 #define BLYNK_AUTH_TOKEN "TON_TOKEN_BLYNK"
@@ -111,8 +111,8 @@ const char* WIFI_PASSWORD = "TON_MDP";
 
 const String validUIDs[] = { "3351ab0d" };
 
+## 🚀 Mise en route
 
-##🚀 Mise en route
 1. Ouvrir le projet dans l'IDE Arduino
 
 2. Installer les bibliothèques suivantes :
@@ -138,7 +138,9 @@ ESP32Servo
 ├── images               #contient les images réels 
 ├── README.md            # Documentation du projet
 
-##🧠 À venir
+## 🧠 À venir
+
+
 
 * Ajout d’un écran TFT/OLED pour affichage local
 
