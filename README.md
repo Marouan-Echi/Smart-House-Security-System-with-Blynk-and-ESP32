@@ -1,92 +1,135 @@
-# Smart-House-Security-System-with-Blynk-and-ESP32
-Ce projet vise à créer un système de sécurité intelligent pour la maison basé sur ESP32, intégrant plusieurs capteurs (mouvement, gaz, distance, RFID) et une interface cloud via Blynk pour la surveillance en temps réel.
+# 🔐 Smart House Security System with ESP32, Blynk, and RFID
 
-🛠️ Technologies et composants utilisés
-Carte ESP32 (ESP-WROOM-32)
+![ESP32](https://img.shields.io/badge/Board-ESP32-blue)
+![Blynk](https://img.shields.io/badge/Blynk-Enabled-green)
+![RFID](https://img.shields.io/badge/RFID-RC522-lightgrey)
+![Status](https://img.shields.io/badge/Project-Active-brightgreen)
 
-Capteur de mouvement PIR pour la détection d’intrusions
+## 📖 Description
 
-Capteur de gaz MQ-2 pour la détection de fumée/gaz
+Ce projet implémente un **système de sécurité domestique intelligent** basé sur la carte **ESP32**, utilisant des capteurs pour détecter les mouvements, les gaz, les obstacles, et pour gérer les accès via un **lecteur RFID**. Grâce à **Blynk**, les données sont envoyées vers une application mobile pour permettre une surveillance en **temps réel**.
 
-Lecteur RFID RC522 pour le contrôle d'accès avec badges autorisés
+---
 
-Capteur à ultrasons HC-SR04 pour la détection de proximité
+## 🎯 Objectifs
 
-Servo-moteur pour la gestion de l'ouverture de porte
+- Contrôle d'accès sécurisé par badge RFID
+- Détection de mouvement avec capteur PIR
+- Détection de gaz avec MQ-2 (fumée, propane, etc.)
+- Détection de proximité avec capteur à ultrasons
+- Contrôle d’un servo pour ouverture automatique
+- Notifications via Blynk et suivi en direct
 
-LEDs et buzzer pour les alertes visuelles et sonores
+---
 
-Blynk IoT (via SSL) pour la visualisation des données et les notifications push
+## 🛠️ Matériel utilisé
 
-NTP pour la synchronisation automatique de l’heure
+| Composant               | Rôle                                |
+|------------------------|-------------------------------------|
+| ESP32 DevKit V1        | Microcontrôleur principal           |
+| Capteur PIR            | Détection de mouvement              |
+| Capteur MQ-2           | Détection de gaz/fumée              |
+| Capteur à ultrasons HC-SR04 | Détection de proximité          |
+| Lecteur RFID RC522     | Contrôle d’accès par badge          |
+| Servo-moteur           | Ouverture/fermeture de porte        |
+| LEDs + Buzzer          | Signalisations sonores et visuelles |
+| Application Blynk      | Interface mobile de surveillance    |
 
-Arduino IDE pour la programmation
+---
 
-⚙️ Fonctionnalités
-🔒 Contrôle d’accès par badge RFID
-Ouverture automatique d’une porte si le badge est autorisé.
+## 🧪 Fonctionnalités
 
-Refus d’accès et alerte sonore en cas de badge inconnu.
+✅ **RFID** :  
+- Lecture de badge et comparaison avec liste autorisée (`validUIDs`)
+- Ouverture automatique via servo en cas d’accès autorisé
+- Rejet et alerte sonore en cas de badge inconnu  
+- Log des accès dans Blynk (V6)
 
-Historique des accès via Blynk (log d’événements).
+✅ **Détection de gaz (MQ-2)** :  
+- Lecture analogique continue
+- Alerte sonore + notification Blynk en cas de dépassement de seuil
 
-🔥 Détection de gaz
-Lecture continue de la qualité de l’air via MQ-2.
+✅ **Capteur PIR** :  
+- Détection de mouvement
+- Allumage LED verte et signal dans Blynk (V2)
 
-Alerte sonore et notification Blynk si un seuil critique est dépassé.
+✅ **Capteur à ultrasons** :  
+- Mesure de la distance
+- Détection d’obstacle à moins de 10 cm
+- Alerte sonore + notification Blynk (V3)
 
-👁️ Détection de mouvement
-Activation de la LED verte si un mouvement est détecté.
+✅ **Surveillance cloud avec Blynk** :  
+- Visualisation en temps réel
+- Notifications d’alerte (gaz, obstacle, badge inconnu)
+- Dashboard configurable
 
-Affichage de l’état en temps réel dans l’application Blynk.
+---
 
-📏 Détection de proximité (ultrasons)
-Détection d’obstacles à une distance critique.
+## 📲 Dashboard Blynk (ESP32 SSL)
 
-Alerte sonore et envoi d’une notification via Blynk.
+Widgets utilisés :
 
-📡 Connectivité
-Connexion automatique au Wi-Fi avec reconnexion automatique en cas de perte.
+| Pin Virtuel | Fonction                          |
+|-------------|-----------------------------------|
+| V0          | LED verte (mouvement)             |
+| V1          | LED rouge (gaz)                   |
+| V2          | Mouvement détecté (PIR)           |
+| V3          | Distance en cm (ultrasons)        |
+| V4          | Position du servo (angle)         |
+| V5          | Valeur brute du capteur de gaz    |
+| V6          | Résultat RFID : accès oui/non     |
 
-Affichage de l'adresse IP dans le moniteur série.
+---
 
-🧠 Architecture logicielle
-Le système est basé sur un cycle loop() temps réel, et utilise :
+## 🔗 Architecture logicielle
 
-BlynkTimer pour les envois périodiques de données vers le cloud
+```mermaid
+graph TD
+  A[ESP32] -->|PIR| B[Mouvement détecté]
+  A -->|MQ2| C[Détection gaz]
+  A -->|Ultrason| D[Détection obstacle]
+  A -->|RC522| E[Badge RFID]
+  A -->|Wi-Fi| F[Blynk]
+  E --> G{UID autorisé ?}
+  G -- Oui --> H[SERVOMOTEUR : Ouvrir porte]
+  G -- Non --> I[BUZZER + LED rouge]
 
-Synchronisation NTP pour avoir l’heure exacte
+##🔧 Configuration
+Dans config.h :
 
-MFRC522 pour le scan RFID
+#define BLYNK_AUTH_TOKEN "TON_TOKEN_BLYNK"
+const char* WIFI_SSID = "TON_SSID";
+const char* WIFI_PASSWORD = "TON_MDP";
+const String validUIDs[] = { "3351ab0d" };
 
-pulseIn() pour mesurer la distance par ultrasons
+##🚀 Mise en route
+1. Ouvrir le projet dans l'IDE Arduino
 
-Lecture analogique/numérique des capteurs pour les décisions
+2. Installer les bibliothèques suivantes :
+Blynk
+MFRC522
+ESP32Servo
 
-🖥️ Interface Blynk
-Les widgets utilisés dans le dashboard Blynk :
+3. Modifier le fichier config.h avec vos informations personnelles
 
-Widget	Fonction
-V0	État LED verte (mouvement)
-V1	État LED rouge (gaz)
-V2	Mouvement détecté (PIR)
-V3	Distance mesurée (ultrason)
-V4	Position du servo (porte)
-V5	Valeur du capteur de gaz
-V6	Message accès RFID (accordé/refusé)
+4. Flasher le code sur l’ESP32
 
-📦 Organisation des fichiers
-bash
-Copier
-Modifier
-├── config.h            # Configuration Wi-Fi, UID RFID autorisés
-├── main.ino            # Code principal du projet
-├── README.md           # Description du projet
-✅ Améliorations futures
-Intégration d’un écran OLED ou TFT pour afficher les statuts localement.
+5. Ouvrir l'application Blynk et créer les widgets mentionnés ci-dessus
 
-Enregistrement des événements sur Firebase ou une base de données distante.
+6. Lancer le moniteur série et tester les capteurs
 
-Ajout de reconnaissance faciale ou de commandes vocales.
+## 📦 Structure du projet
+📁 SmartHouseSecurity/
+├── config.h             # Configuration Wi-Fi et RFID
+├── main.ino             # Code principal
+├── images               #contient les images réels 
+├── README.md            # Documentation du projet
+##🧠 À venir
+* Ajout d’un écran TFT/OLED pour affichage local
 
-Application mobile Flutter dédiée.
+* Intégration Firebase pour logs longue durée
+
+* Authentification à double facteur (ex: badge + code)
+
+* Envoi automatique d’email en cas d’alerte
+
