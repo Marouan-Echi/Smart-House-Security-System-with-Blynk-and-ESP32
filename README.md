@@ -84,13 +84,21 @@ Widgets utilisés :
 ## 🔗 Architecture logicielle
 
   A[ESP32] -->|PIR| B[Mouvement détecté]
+  
   A -->|MQ2| C[Détection gaz]
+  
   A -->|Ultrason| D[Détection obstacle]
+  
   A -->|RC522| E[Badge RFID]
+  
   A -->|Wi-Fi| F[Blynk]
+  
   E --> G{UID autorisé ?}
+  
   G -- Oui --> H[SERVOMOTEUR : Ouvrir porte]
+  
   G -- Non --> I[BUZZER + LED rouge]
+  
 
 ##🔧 Configuration
 Dans config.h :
